@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"  
+    id="com.quantumrand.leadbolt.cordova.plugin"  
+    version="0.0.1">  
+    <name>ApptrackerPlugin</name>  
+    <description>ApptrackerPlugin</description>  
+    <author>www.leadbolt.com</author>  
+    <license>Apache 2.0 License</license>  
+    <engines>  
+        <engine name="cordova" version=">=3.0.0" />  
+    </engines>  
+      
+    <platform name="android">
+		<js-module src="www/android/AppTracker.js" name="AppTracker">  
+			<clobbers target="AppTracker" />  
+		</js-module>
+        <source-file src="src/android/AppTrackerPhonegap.jar" target-dir="libs" />
+        <source-file src="src/android/AppTracker.jar" target-dir="libs" />
+        <config-file target="res/xml/config.xml" parent="/*">  
+            <feature name="AppTracker">  
+                <param name="android-package" value="com.apptracker.android.phonegap.AppTrackerPlugin"/>  
+            </feature>  
+        </config-file>  
+        <config-file target="AndroidManifest.xml" parent="/*">      
+			<uses-permission android:name="android.permission.INTERNET"/>
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<activity android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:name="com.apptracker.android.module.AppModuleActivity" android:theme="@android:style/Theme.Translucent" android:hardwareAccelerated ="false"></activity>
+		</config-file>
+    </platform>  
+    
+    <platform name="ios">
+		<js-module src="www/ios/AppTracker.js" name="AppTracker">  
+			<clobbers target="AppTracker" />  
+		</js-module>
+        <config-file target="config.xml" parent="/*">
+            <feature name="AppTracker">
+                <param name="ios-package" value="AppTrackerPlugin"/>
+                <param name="onload" value="true" />
+            </feature>  
+        </config-file>
+        <header-file src="src/ios/AppTrackerPlugin.h" />
+        <source-file src="src/ios/AppTrackerPlugin.m" />
+<!--        <source-file src="src/ios/libAppTrackerPlugin.a" framework="true" /> -->
+        <header-file src="src/ios/AppTracker.h" />
+        <source-file src="src/ios/libAppTracker.a" framework="true"/>
+        <framework src="AVFoundation.framework"/>
+        <framework src="AdSupport.framework"/>
+        <framework src="StoreKit.framework"/>
+        <framework src="SystemConfiguration.framework"/>
+        <framework src="CoreTelephony.framework" />
+        <framework src="CoreMedia.framework" />
+	</platform>
+</plugin>  
