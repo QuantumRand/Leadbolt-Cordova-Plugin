@@ -8,16 +8,49 @@
 
 #import "AppTrackerPlugin.h"
 #import <Cordova/CDVPluginResult.h>
-#import "AppTracker.h"
+//#import "AppTracker.h"
 
 @implementation AppTrackerPlugin
+
+-(void) onModuleLoaded:(NSString *)placement {
+    //To receive event, uncomment the line below and add your own onModuleLoaded() function to your js file
+    NSString * javascript = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onModuleLoaded',{placement:'%@'});", placement];
+    [self.commandDelegate evalJs:javascript];
+}
+
+-(void) onModuleClosed:(NSString *)placement {
+    //To receive event, uncomment the line below and add your own onModuleClosed() function to your js file
+    NSString * javascript = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onModuleClosed',{placement:'%@'});", placement];
+    [self.commandDelegate evalJs:javascript];
+}
+-(void) onModuleClicked:(NSString *)placement {
+    NSString * javascript = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onModuleClicked',{placement:'%@'});", placement];
+    [self.commandDelegate evalJs:javascript];
+}
+-(void) onModuleCached:(NSString *)placement {
+    //To receive event, uncomment the line below and add your own onModuleCached() function to your js file
+    NSString * javascript = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onModuleCached',{placement:'%@'});", placement];
+    [self.commandDelegate evalJs:javascript];
+}
+-(void) onModuleFailed:(NSString *)placement error:(NSString *)error cached:(BOOL)cached {
+    //To receive event, uncomment the line below and add your own onModuleFailed() function to your js file
+    NSString * javascript = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onModuleFailed',{placement:'%@', error:'%@', cached:%@});", placement,error,cached ? @"true":@"false"];
+    [self.commandDelegate evalJs:javascript];
+}
+-(void) onMediaFinished:(BOOL)viewCompleted {
+    //To receive event, uncomment the line below and add your own onMediaFinished() function to your js file
+    NSString * javascript = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onMediaFinished',{viewCompleted:%@});", viewCompleted ? @"true":@"false"];
+    [self.commandDelegate evalJs:javascript];
+}
 
 -(void)startSession:(CDVInvokedUrlCommand *)command
 {
     NSString *apikey = [command.arguments objectAtIndex:0];
     NSLog(@"startSession key=%@", apikey);
 
-    [self initializeEventListeners];
+    //[self initializeEventListeners];
+    [AppTracker setFramework:@"phonegap"];
+    [AppTracker setAppModuleDelete:self];
     [AppTracker startSession:apikey];
 
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
@@ -120,6 +153,22 @@
 {
     int orientation = [[command.arguments objectAtIndex:0] intValue];
     [AppTracker fixAdOrientation:(AdOrientation)(orientation)];
+    
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+-(void) setAgeRange:(CDVInvokedUrlCommand *)command
+{
+    NSString *arg = [command.arguments objectAtIndex:0];
+    [AppTracker setAgeRange:arg];
+    
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+-(void) setGender:(CDVInvokedUrlCommand *)command
+{
+    NSString *arg = [command.arguments objectAtIndex:0];
+    [AppTracker setGender:arg];
     
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }

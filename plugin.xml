@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"  
     id="com.quantumrand.leadbolt.cordova.plugin"  
-    version="0.0.1">  
+    version="0.0.2">  
     <name>ApptrackerPlugin</name>  
     <description>ApptrackerPlugin</description>  
     <author>www.leadbolt.com</author>  
@@ -34,11 +34,18 @@
 		<js-module src="www/ios/AppTracker.js" name="AppTracker">  
 			<clobbers target="AppTracker" />  
 		</js-module>
-        <config-file target="config.xml" parent="/*">
+		<config-file target="config.xml" parent="/*">
             <feature name="AppTracker">
                 <param name="ios-package" value="AppTrackerPlugin"/>
                 <param name="onload" value="true" />
             </feature>  
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+            <key>NSAppTransportSecurity</key>
+            <dict>
+                <key>NSAllowsArbitraryLoads</key>
+                <true/>
+            </dict>
         </config-file>
         <header-file src="src/ios/AppTrackerPlugin.h" />
         <source-file src="src/ios/AppTrackerPlugin.m" />

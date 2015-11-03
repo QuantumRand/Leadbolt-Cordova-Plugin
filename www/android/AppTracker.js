@@ -25,6 +25,15 @@ var AppTracker = {
         },
         fixAdOrientation : function(orientation, successcallback, errorcallback) {
             cordova.exec(successcallback, errorcallback, "AppTracker", "fixAdOrientation", [orientation]);
-        }
+        },
+        destroyModule : function(successcallback, errorcallback) {
+            cordova.exec(successcallback, errorcallback, "AppTracker", "destroyModule", []);
+        },
+        setAgeRange: function(ageRange, successcallback, errorcallback) {
+            cordova.exec(successcallback, errorcallback, "AppTracker", "setAgeRange", [ageRange]);
+        },
+        setGender: function(gender, successcallback, errorcallback) {
+            cordova.exec(successcallback, errorcallback, "AppTracker", "setGender", [gender]);
+        } 
     };
 module.exports = AppTracker;
